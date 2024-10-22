@@ -1,22 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './App.css';        // Keep the existing CSS import
+import Weather from './components/Weather';  // Import the Weather component
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Weather Dashboard</h1>   {/* Replace the logo and default content */}
+        <Weather />  {/* Add the Weather component here */}
       </header>
     </div>
   );
