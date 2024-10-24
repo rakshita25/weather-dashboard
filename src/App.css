@@ -98,10 +98,12 @@ button:hover {
 /* Favorite cities container */
 .favorites-container {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  justify-content: flex-start; /* Align items to the left */
+  flex-wrap: wrap;             /* Allow cities to wrap */
   gap: 20px;
   margin-top: 10px;
+  margin-left: 20px;           /* Add some margin for spacing */
+  width: 90%;                  /* Adjust width to align to the left */
 }
 
 /* Small weather info box for favorite cities */
@@ -149,4 +151,20 @@ button:hover {
 .weather-info-small {
   font-size: 0.9rem; /* Smaller font size for favorite city weather info */
   margin: 0; /* Remove any default margin */
+}
+
+.logout-button {
+  position: absolute;
+  top: 20px;    /* Adjust as needed */
+  right: 20px;  /* Adjust as needed */
+  padding: 10px 20px;
+  background-color: #ff4b5c; /* Red color for visibility */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #ff1a33; /* Darker shade on hover */
 }
