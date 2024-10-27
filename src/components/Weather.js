@@ -145,4 +145,3 @@ function FavoriteCity({ city, fetchWeather }) {
 }
 
 export default Weather;
-

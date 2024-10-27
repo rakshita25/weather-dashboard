@@ -1,12 +1,9 @@
+/* Center the weather dashboard content */
 body {
   background-color: #1e1e2f;
   color: #f5f5f5;
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
 }
 
-/* Center the weather dashboard content */
 .App {
   display: flex;
   flex-direction: column;
