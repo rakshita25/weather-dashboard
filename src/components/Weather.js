@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import '../App.css';
 
 function Weather({ currentUser, onLogout }) {
@@ -6,6 +6,7 @@ function Weather({ currentUser, onLogout }) {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem(currentUser)) || [];
@@ -43,25 +44,10 @@ function Weather({ currentUser, onLogout }) {
     }
   };
 
-  const fetchWeatherForFavorites = useCallback(
-    async (city) => {
-      const apiKey = 'ad292c5c8a24a59d588e56dfe2ef80ef';
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('City not found');
-        }
-        const data = await response.json();
-        return data;
-      } catch (err) {
-        console.error(err.message);
-        return null;
-      }
-    },
-    []
-  );
+  const handleFavoriteClick = (favCity) => {
+    setSelectedCity(favCity);
+    fetchWeather(favCity);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -73,10 +59,23 @@ function Weather({ currentUser, onLogout }) {
 
   return (
     <div>
-      {/* Logout button in top-right corner */}
       <button className="logout-button" onClick={onLogout}>Logout</button>
       
       <h2>Weather Dashboard</h2>
+      <h3>Your Favorite Cities</h3>
+      <div className="favorites-menu">
+        {favorites.length > 0 ? (
+          <ul>
+            {favorites.map((favCity, index) => (
+              <li key={index}>
+                <button onClick={() => handleFavoriteClick(favCity)} className={favCity === selectedCity ? 'selected-city' : ''}>{favCity}</button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No favorite cities yet.</p>
+        )}
+      </div>
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <input
@@ -92,53 +91,16 @@ function Weather({ currentUser, onLogout }) {
 
       {error && <p>{error}</p>}
 
-      {weatherData && (
+      {weatherData && selectedCity && (
         <div className="weather-info">
           <h3>Weather in {weatherData.name}</h3>
-          <p>Temperature: {weatherData.main?.temp ?? 'N/A'}°C</p>
+          <p>Current Temperature: {weatherData.main?.temp ?? 'N/A'}°C</p>
+          <p>Max Temp: {weatherData.main?.temp_max ?? 'N/A'}°C</p>
+          <p>Min Temp: {weatherData.main?.temp_min ?? 'N/A'}°C</p>
           <p>Humidity: {weatherData.main?.humidity ?? 'N/A'}%</p>
           <p>Conditions: {weatherData.weather?.[0]?.description ?? 'N/A'}</p>
           <p>Visibility: {weatherData.visibility ? `${weatherData.visibility} meters` : 'N/A'}</p>
         </div>
-      )}
-
-      <h3>Your Favorite Cities</h3>
-      <div className="favorites-container">
-        {favorites.length > 0 ? (
-          favorites.map((favCity, index) => (
-            <FavoriteCity key={index} city={favCity} fetchWeather={fetchWeatherForFavorites} />
-          ))
-        ) : (
-          <p>No favorite cities yet.</p>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// Component to display the weather for each favorite city
-function FavoriteCity({ city, fetchWeather }) {
-  const [favWeatherData, setFavWeatherData] = useState(null);
-
-  useEffect(() => {
-    const getWeather = async () => {
-      const weatherData = await fetchWeather(city);
-      setFavWeatherData(weatherData);
-    };
-
-    getWeather();
-  }, [city, fetchWeather]);
-
-  return (
-    <div className="favorite-city">
-      <h4>{city}</h4>
-      {favWeatherData ? (
-        <div className="weather-info-small">
-          <p>Temp: {favWeatherData.main?.temp ?? 'N/A'}°C</p>
-          <p>Cond: {favWeatherData.weather?.[0]?.description ?? 'N/A'}</p>
-        </div>
-      ) : (
-        <p>Loading...</p>
       )}
     </div>
   );

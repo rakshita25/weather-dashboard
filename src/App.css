@@ -165,3 +165,30 @@ button:hover {
 .logout-button:hover {
   background-color: #ff1a33; /* Darker shade on hover */
 }
+
+.favorites-menu ul {
+  list-style-type: none;
+  display: flex;
+  padding: 10;
+  margin-left: 20;
+  gap: 20px;
+}
+
+.favorites-menu li button {
+  background-color: #45a049;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.favorites-menu li button:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the selected city */
+.favorites-menu li button.selected-city {
+  background-color: #0056b3;
+  color: #fff;
+}
